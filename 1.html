@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ascendify — Health, Fitness & Finance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+    :root {
+    --bg:          #0A0F1C;
+    --bg-2:        #0F1629;
+    --bg-3:        #141D35;
+    --bg-4:        #192240;
+    --bg-hover:    #1E2A4A;
+    --bg-input:    #111829;
+    --green:       #22D87A;
+    --green-2:     rgba(34,216,122,0.12);
+    --green-3:     rgba(34,216,122,0.22);
+    --blue:        #4DABF7;
+    --blue-2:      rgba(77,171,247,0.12);
+    --blue-3:      rgba(77,171,247,0.22);
+    --purple:      #B794F4;
+    --purple-2:    rgba(183,148,244,0.12);
+    --purple-3:    rgba(183,148,244,0.22);
+    --amber:       #FBB040;
+    --amber-2:     rgba(251,176,64,0.12);
+    --red:         #FF6B6B;
+    --red-2:       rgba(255,107,107,0.12);
+    --txt:         #EFF2FA;
+    --txt-2:       #8B9EC4;
+    --txt-3:       #4A5C80;
+    --txt-4:       #2A3558;
+    --border:      rgba(255,255,255,0.065);
+    --border-2:    rgba(255,255,255,0.11);
+    --border-3:    rgba(255,255,255,0.18);
+    --r:           16px;
+    --r-sm:        10px;
+    --r-xs:        7px;
+    --font-ui:     'Plus Jakarta Sans', sans-serif;
+    --font-head:   'Outfit', sans-serif;
+    --font-mono:   'JetBrains Mono', monospace;
+    --sidebar-w:   248px;
+    --shadow:      0 4px 24px rgba(0,0,0,0.4);
+    --shadow-lg:   0 12px 48px rgba(0,0,0,0.6);
+    }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    html { height:100%; }
+    body {
+    font-family: var(--font-ui);
+    background: var(--bg);
+    color: var(--txt);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+    content:'';
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image: radial-gradient(circle at 20% 20%, rgba(34,216,122,0.04) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(77,171,247,0.04) 0%, transparent 50%);
+    }
+    ::-webkit-scrollbar { width:5px; height:5px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background:var(--border-2); border-radius:10px; }
+    * { scrollbar-width:thin; scrollbar-color:var(--border-2) transparent; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--bg-2);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 16px;
+    z-index: 20;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: transform 0.32s cubic-bezier(0.22,1,0.36,1);
+    }
+    .sidebar-logo {
+    padding: 22px 18px 18px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+    position: sticky;
+    top: 0;
+    background: var(--bg-2);
+    z-index: 2;
+    }
+
+    /* ── SIDEBAR CLOSE BUTTON ── */
+    .sidebar-close-btn {
+    display: none; /* hidden on desktop */
+    margin-left: auto;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--r-xs);
+    background: var(--bg-3);
+    border: 1px solid var(--border-2);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--txt-2);
+    flex-shrink: 0;
+    transition: all 0.18s;
+    }
+    .sidebar-close-btn:hover { background: var(--bg-4); color: var(--txt); }
+
+    .logo-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--green), #1ab870);
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: #fff;
+    box-shadow: 0 4px 16px rgba(34,216,122,0.3);
+    flex-shrink: 0;
+    }
+    .logo-name { font-family:var(--font-head); font-weight:800; font-size:19px; letter-spacing:-0.5px; line-height:1; }
+    .logo-name span { color:var(--green); }
+    .logo-sub { font-size:10px; color:var(--txt-3); margin-top:2px; letter-spacing:0.3px; }
+    .nav-section { padding:0 10px; margin-bottom:6px; }
+    .nav-label { font-size:9.5px; font-weight:700; letter-spacing:1.5px; color:var(--txt-4); text-transform:uppercase; padding:8px 10px 4px; font-family:var(--font-head); }
+    .nav-item {
+    display:flex; align-items:center; gap:10px; padding:9px 11px; border-radius:var(--r-sm);
+    cursor:pointer; font-size:13.5px; font-weight:500; color:var(--txt-2);
+    transition:all 0.18s ease; position:relative; line-height:1; user-select:none;
+    }
+    .nav-item:hover { background:var(--bg-hover); color:var(--txt); }
+    .nav-item.active { background:var(--green-2); color:var(--green); font-weight:600; }
+    .nav-item.active .nav-icon { color:var(--green); opacity:1; }
+    .nav-icon { font-size:14px; width:20px; text-align:center; flex-shrink:0; opacity:0.8; }
+    .pro-badge { margin-left:auto; font-size:9px; background:var(--amber-2); color:var(--amber); padding:2px 7px; border-radius:20px; font-weight:700; font-family:var(--font-head); letter-spacing:0.4px; border:1px solid rgba(251,176,64,0.2); }
+    .pro-badge.active { background:var(--green-2); color:var(--green); border-color:var(--green-3); }
+    .nav-item.locked { color:var(--txt-4); }
+    .nav-item.locked:hover { color:var(--txt-3); }
+    .nav-item.unlocked .pro-badge { display:none; }
+    .sidebar-bottom { margin-top:auto; padding:14px 10px 0; border-top:1px solid var(--border); }
+    .user-pill { display:flex; align-items:center; gap:10px; padding:9px 8px 12px; cursor:pointer; border-radius:var(--r-sm); transition:background 0.18s; }
+    .user-pill:hover { background:var(--bg-hover); }
+    .avatar { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--green),var(--blue)); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; color:#fff; font-family:var(--font-head); flex-shrink:0; box-shadow:0 2px 10px rgba(34,216,122,0.25); }
+    .u-name { font-size:13px; font-weight:600; line-height:1.3; }
+    .u-plan { font-size:11px; color:var(--txt-3); }
+    .upgrade-cta { background:linear-gradient(135deg,rgba(34,216,122,0.08),rgba(77,171,247,0.08)); border:1px solid var(--green-3); border-radius:var(--r-sm); padding:14px; position:relative; overflow:hidden; }
+    .upgrade-cta::after { content:''; position:absolute; top:-20px; right:-20px; width:70px; height:70px; background:radial-gradient(circle,rgba(34,216,122,0.18),transparent); border-radius:50%; }
+    .uc-title { font-family:var(--font-head); font-weight:700; font-size:13px; margin-bottom:3px; }
+    .uc-sub { font-size:11px; color:var(--txt-2); margin-bottom:10px; line-height:1.4; }
+    .btn-upgrade { background:linear-gradient(90deg,var(--green),#2bc484); border:none; border-radius:8px; padding:8px 16px; color:#fff; font-family:var(--font-head); font-weight:700; font-size:12px; cursor:pointer; width:100%; transition:all 0.2s; }
+    .btn-upgrade:hover { opacity:0.88; transform:translateY(-1px); }
+
+    /* ── SIDEBAR OVERLAY ── */
+    .sidebar-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    z-index: 19;
+    background: rgba(5,8,20,0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    }
+    .sidebar-overlay.open { display: block; }
+
+    /* ── MAIN ── */
+    .main { flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:0; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; padding:14px 22px; border-bottom:1px solid var(--border); background:var(--bg-2); gap:14px; flex-shrink:0; position:relative; z-index:5; }
+    .topbar-left { display:flex; align-items:center; gap:12px; min-width:0; flex:1; }
+    .menu-btn { display:none; width:36px; height:36px; border-radius:var(--r-xs); background:var(--bg-3); border:1px solid var(--border-2); align-items:center; justify-content:center; cursor:pointer; font-size:15px; color:var(--txt-2); transition:all 0.18s; flex-shrink:0; }
+    .menu-btn:hover { background:var(--bg-4); color:var(--txt); }
+    .page-title { font-family:var(--font-head); font-weight:700; font-size:19px; letter-spacing:-0.4px; line-height:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .page-sub { font-size:12px; color:var(--txt-2); margin-top:3px; letter-spacing:0.1px; }
+    .topbar-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+    .btn { display:flex; align-items:center; gap:6px; padding:8px 14px; border-radius:var(--r-xs); cursor:pointer; font-size:13px; font-weight:600; border:none; transition:all 0.18s; font-family:var(--font-ui); white-space:nowrap; letter-spacing:0.1px; }
+    .btn-green { background:var(--green-2); color:var(--green); border:1px solid var(--green-3); }
+    .btn-green:hover { background:rgba(34,216,122,0.2); box-shadow:0 0 16px rgba(34,216,122,0.12); }
+    .btn-blue { background:var(--blue-2); color:var(--blue); border:1px solid var(--blue-3); }
+    .btn-blue:hover { background:rgba(77,171,247,0.2); }
+    .btn-ghost { background:transparent; color:var(--txt-2); border:1px solid var(--border-2); }
+    .btn-ghost:hover { background:var(--bg-3); color:var(--txt); }
+
+    /* ── NOTIFICATION BELL + DROPDOWN ── */
+    .notif-wrap { position:static; flex-shrink:0; }
+    .notif-btn { width:36px; height:36px; border-radius:var(--r-xs); background:var(--bg-3); border:1px solid var(--border-2); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:15px; color:var(--txt-2); position:relative; transition:all 0.18s; }
+    .notif-btn:hover, .notif-btn.open { background:var(--bg-4); color:var(--txt); border-color:var(--border-3); }
+    .notif-dot { position:absolute; top:7px; right:7px; width:7px; height:7px; background:var(--red); border-radius:50%; border:2px solid var(--bg-2); transition:opacity 0.3s; }
+    .notif-dot.hidden { opacity:0; }
+    .notif-dropdown {
+    position: fixed;
+    top: 65px;
+    right: 16px;
+    width: 320px;
+    background: var(--bg-2);
+    border: 1px solid var(--border-2);
+    border-radius: var(--r);
+    box-shadow: var(--shadow-lg);
+    z-index: 100;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+    pointer-events: none;
+    transition: all 0.22s cubic-bezier(0.22,1,0.36,1);
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    }
+    .notif-dropdown.open { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+    .notif-dd-head { display:flex; align-items:center; justify-content:space-between; padding:14px 16px 10px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--bg-2); z-index:2; }
+    .notif-dd-title { font-family:var(--font-head); font-weight:700; font-size:14px; }
+    .notif-mark-all { font-size:11.5px; color:var(--blue); cursor:pointer; font-weight:600; }
+    .notif-mark-all:hover { opacity:0.7; }
+    .notif-item { display:flex; align-items:flex-start; gap:11px; padding:11px 16px; border-bottom:1px solid var(--border); cursor:pointer; transition:background 0.15s; position:relative; }
+    .notif-item:last-child { border-bottom:none; }
+    .notif-item:hover { background:var(--bg-hover); }
+    .notif-item.unread { background:rgba(34,216,122,0.03); }
+    .notif-item.unread::before { content:''; position:absolute; left:0; top:50%; transform:translateY(-50%); width:3px; height:60%; background:var(--green); border-radius:0 3px 3px 0; }
+    .notif-ico { width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; margin-top:1px; }
+    .notif-body { flex:1; min-width:0; }
+    .notif-title { font-size:13px; font-weight:600; line-height:1.3; }
+    .notif-desc { font-size:11.5px; color:var(--txt-2); margin-top:2px; line-height:1.4; }
+    .notif-time { font-size:10.5px; color:var(--txt-3); margin-top:3px; font-family:var(--font-mono); }
+    .notif-footer { padding:10px 16px; border-top:1px solid var(--border); text-align:center; font-size:12px; color:var(--blue); cursor:pointer; font-weight:600; position:sticky; bottom:0; background:var(--bg-2); }
+    .notif-footer:hover { background:var(--bg-hover); }
+
+    /* ── CONTENT ── */
+    .content { flex:1; overflow-y:auto; padding:22px; }
+    .page { display:none; }
+    .page.active { display:block; animation:pageIn 0.28s cubic-bezier(0.22,1,0.36,1) both; }
+    @keyframes pageIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ── GRIDS ── */
+    .g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .g2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .g-auto { display:grid; grid-template-columns:2fr 1fr; gap:14px; }
+    .mb14 { margin-bottom:14px; }
+    .mb18 { margin-bottom:18px; }
+
+    /* ── CARDS ── */
+    .card { background:var(--bg-2); border:1px solid var(--border); border-radius:var(--r); padding:18px; position:relative; overflow:hidden; transition:border-color 0.2s; }
+    .card:hover { border-color:var(--border-2); }
+    .card-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+    .card-lbl { font-size:10.5px; font-weight:700; color:var(--txt-3); text-transform:uppercase; letter-spacing:1.3px; font-family:var(--font-head); }
+    .card-link { font-size:12px; font-weight:600; color:var(--blue); cursor:pointer; transition:opacity 0.2s; font-family:var(--font-ui); }
+    .card-link:hover { opacity:0.7; }
+
+    /* ── TILES ── */
+    .tile { background:var(--bg-2); border:1px solid var(--border); border-radius:var(--r); padding:18px; position:relative; overflow:hidden; cursor:default; transition:all 0.22s cubic-bezier(0.22,1,0.36,1); }
+    .tile:hover { transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--border-2); }
+    .tile::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; border-radius:var(--r) var(--r) 0 0; }
+    .t-green::before { background:linear-gradient(90deg,var(--green),transparent 70%); }
+    .t-blue::before  { background:linear-gradient(90deg,var(--blue),transparent 70%); }
+    .t-amber::before { background:linear-gradient(90deg,var(--amber),transparent 70%); }
+    .t-red::before   { background:linear-gradient(90deg,var(--red),transparent 70%); }
+    .t-purple::before{ background:linear-gradient(90deg,var(--purple),transparent 70%); }
+    .tile::after { content:''; position:absolute; bottom:-18px; right:-18px; width:72px; height:72px; border-radius:50%; opacity:0.07; pointer-events:none; transition:opacity 0.3s; }
+    .tile:hover::after { opacity:0.14; }
+    .t-green::after  { background:var(--green); }
+    .t-blue::after   { background:var(--blue); }
+    .t-amber::after  { background:var(--amber); }
+    .t-red::after    { background:var(--red); }
+    .t-purple::after { background:var(--purple); }
+    .tile-lbl { font-size:12px; color:var(--txt-2); font-weight:500; margin-bottom:7px; }
+    .tile-val { font-family:var(--font-mono); font-weight:700; font-size:26px; letter-spacing:-1px; line-height:1; margin-bottom:5px; }
+    .tile-sub { font-size:11px; color:var(--txt-3); }
+    .tile-ico { position:absolute; top:16px; right:16px; font-size:17px; opacity:0.18; }
+    .chip { display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:700; padding:3px 8px; border-radius:20px; width:fit-content; margin-top:5px; font-family:var(--font-mono); }
+    .chip-up   { background:rgba(34,216,122,0.1); color:var(--green); }
+    .chip-down { background:rgba(255,107,107,0.1); color:var(--red); }
+
+    /* ── PROGRESS ── */
+    .prow { margin-bottom:13px; }
+    .prow:last-child { margin-bottom:0; }
+    .plabels { display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px; align-items:center; }
+    .pname { color:var(--txt-2); font-weight:500; display:flex; align-items:center; gap:5px; }
+    .pval { font-family:var(--font-mono); font-weight:600; font-size:11.5px; }
+    .ptrack { height:6px; background:rgba(255,255,255,0.06); border-radius:10px; overflow:hidden; }
+    .pfill { height:100%; border-radius:10px; transition:width 0.9s cubic-bezier(0.22,1,0.36,1); position:relative; }
+    .pfill::after { content:''; position:absolute; right:1px; top:50%; transform:translateY(-50%); width:4px; height:4px; border-radius:50%; background:rgba(255,255,255,0.6); }
+
+    /* ── BAR CHART ── */
+    .barchart { display:flex; align-items:flex-end; gap:7px; height:80px; }
+    .bcol { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; }
+    .bar { width:100%; border-radius:5px 5px 0 0; transition:opacity 0.2s,transform 0.15s; cursor:pointer; min-height:4px; }
+    .bar:hover { opacity:0.7; transform:scaleY(1.05); transform-origin:bottom; }
+    .blbl { font-size:9.5px; color:var(--txt-3); font-family:var(--font-mono); }
+
+    /* ── LIST ITEMS ── */
+    .litem { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+    .litem:last-child { border-bottom:none; }
+    .lico { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+    .linfo { flex:1; min-width:0; }
+    .lname { font-size:13.5px; font-weight:600; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lsub { font-size:11.5px; color:var(--txt-2); margin-top:2px; }
+    .lval { font-family:var(--font-mono); font-weight:700; font-size:13px; flex-shrink:0; }
+
+    /* ── BADGES ── */
+    .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:700; font-family:var(--font-head); white-space:nowrap; letter-spacing:0.2px; }
+    .bdg-green  { background:var(--green-2); color:var(--green); border:1px solid var(--green-3); }
+    .bdg-blue   { background:var(--blue-2); color:var(--blue); border:1px solid var(--blue-3); }
+    .bdg-amber  { background:var(--amber-2); color:var(--amber); border:1px solid rgba(251,176,64,0.22); }
+    .bdg-red    { background:var(--red-2); color:var(--red); border:1px solid rgba(255,107,107,0.22); }
+    .bdg-purple { background:var(--purple-2); color:var(--purple); border:1px solid var(--purple-3); }
+
+    /* ── TABS ── */
+    .tabbar { display:flex; gap:3px; background:var(--bg-3); border-radius:var(--r-sm); padding:3px; margin-bottom:18px; border:1px solid var(--border); }
+    .tabitem { flex:1; text-align:center; padding:7px 12px; border-radius:7px; cursor:pointer; font-size:12.5px; font-weight:600; color:var(--txt-3); transition:all 0.18s; font-family:var(--font-head); user-select:none; }
+    .tabitem.active { background:var(--bg-2); color:var(--txt); box-shadow:0 2px 10px rgba(0,0,0,0.4); }
+
+    /* ── TAB CONTENT PANELS ── */
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; animation:pageIn 0.24s ease both; }
+
+    /* ── FORMS ── */
+    .flabel { font-size:11.5px; color:var(--txt-2); margin-bottom:5px; font-weight:600; letter-spacing:0.2px; font-family:var(--font-head); display:block; }
+    .fgroup { display:flex; flex-direction:column; }
+    .finput { background:var(--bg-input); border:1px solid var(--border-2); border-radius:var(--r-sm); padding:10px 13px; color:var(--txt); font-family:var(--font-ui); font-size:13.5px; outline:none; transition:border-color 0.18s,box-shadow 0.18s; width:100%; }
+    .finput:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(34,216,122,0.08); }
+    .finput::placeholder { color:var(--txt-4); }
+    .fgrid { display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-bottom:12px; }
+    .fgrid3 { grid-template-columns:1fr 1fr 1fr; }
+
+    /* ── SECTION HEADER ── */
+    .sh { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:18px; gap:12px; }
+    .sh-title { font-family:var(--font-head); font-weight:700; font-size:16px; letter-spacing:-0.3px; }
+    .sh-sub { font-size:12px; color:var(--txt-2); margin-top:3px; }
+
+    /* ── GOAL CARDS ── */
+    .gcard { background:var(--bg-3); border:1px solid var(--border); border-radius:var(--r-sm); padding:14px; margin-bottom:10px; transition:border-color 0.2s; }
+    .gcard:hover { border-color:var(--border-2); }
+    .gcard-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; gap:8px; }
+    .gcard-name { font-weight:600; font-size:13.5px; line-height:1.3; }
+    .gcard-meta { font-size:11px; color:var(--txt-3); margin-top:7px; }
+
+    /* ── DONUT ── */
+    .donut-wrap { position:relative; width:104px; height:104px; flex-shrink:0; }
+    .donut-wrap svg { width:104px; height:104px; transform:rotate(-90deg); }
+    .donut-ctr { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .donut-val { font-family:var(--font-mono); font-weight:700; font-size:20px; }
+    .donut-sub { font-size:9.5px; color:var(--txt-2); margin-top:1px; }
+
+    /* ── SLEEP / WEEKLY CHARTS ── */
+    .srow { display:flex; align-items:center; gap:10px; margin-bottom:9px; }
+    .srow:last-child { margin-bottom:0; }
+    .sday { font-size:11px; color:var(--txt-3); width:28px; font-family:var(--font-head); font-weight:600; }
+    .strack { flex:1; height:8px; background:rgba(255,255,255,0.06); border-radius:10px; overflow:hidden; }
+    .sfill { height:100%; border-radius:10px; background:linear-gradient(90deg,var(--purple),var(--blue)); }
+    .shrs { font-size:11px; color:var(--txt); width:30px; text-align:right; font-family:var(--font-mono); font-weight:500; }
+
+    /* ── TABLE ── */
+    .xtable { width:100%; border-collapse:collapse; }
+    .xtable th { font-size:10.5px; color:var(--txt-3); font-weight:700; text-align:left; padding:7px 11px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:0.8px; font-family:var(--font-head); }
+    .xtable td { font-size:13px; padding:10px 11px; border-bottom:1px solid var(--border); }
+    .xtable tr:last-child td { border-bottom:none; }
+    .xtable tr:hover td { background:var(--bg-hover); }
+    .xtable .num { font-family:var(--font-mono); font-size:13px; }
+    .cpill { display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:20px; font-size:11.5px; font-weight:600; font-family:var(--font-head); }
+
+    /* ── MOOD ── */
+    .mrow { display:flex; gap:7px; align-items:center; }
+    .mdot { width:38px; height:38px; border-radius:50%; font-size:18px; display:flex; align-items:center; justify-content:center; cursor:pointer; border:2px solid transparent; transition:all 0.18s; background:var(--bg-3); }
+    .mdot:hover { transform:scale(1.15); }
+    .mdot.sel { border-color:var(--green); background:var(--green-2); }
+
+    /* ── STREAK DOTS ── */
+    .streak-row { display:flex; gap:6px; }
+    .sday-dot { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:800; background:rgba(255,255,255,0.04); color:var(--txt-4); font-family:var(--font-head); transition:all 0.2s; }
+    .sday-dot.done { background:var(--green-2); color:var(--green); }
+    .sday-dot.today { background:var(--green); color:#fff; }
+
+    /* ── BUDGET ── */
+    .budrow { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+    .budrow:last-child { border-bottom:none; }
+    .budico { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
+    .budlbl { flex:1; font-size:13.5px; font-weight:500; }
+    .budinput { width:115px; background:var(--bg-input); border:1px solid var(--border-2); border-radius:var(--r-xs); padding:7px 11px 7px 24px; color:var(--txt); font-family:var(--font-mono); font-size:13px; outline:none; transition:border-color 0.18s; text-align:right; }
+    .budinput:focus { border-color:var(--green); }
+    .bud-wrap { position:relative; }
+    .bud-wrap::before { content:'₱'; position:absolute; left:9px; top:50%; transform:translateY(-50%); font-size:11px; color:var(--txt-3); pointer-events:none; font-family:var(--font-mono); }
+    .bud-total { background:var(--bg-3); border:1px solid var(--border); border-radius:var(--r-sm); padding:14px; margin-top:14px; }
+
+    /* ── INSIGHT ── */
+    .insight { background:linear-gradient(135deg,rgba(34,216,122,0.06),rgba(77,171,247,0.06)); border:1px solid var(--green-3); border-radius:var(--r); padding:17px; margin-bottom:14px; }
+    .insight-lbl { font-size:10px; font-weight:700; letter-spacing:1.2px; color:var(--green); text-transform:uppercase; margin-bottom:7px; font-family:var(--font-head); }
+    .insight-txt { font-size:14px; line-height:1.68; }
+    .insight-meta { font-size:11.5px; color:var(--txt-2); margin-top:8px; }
+
+    /* ── LOCK SYSTEM ── */
+    .lock-wrapper { position:relative; }
+    .plock-content { transition:filter 0.3s ease,opacity 0.3s ease; }
+    .lock-wrapper.is-locked .plock-content { filter:blur(3px); opacity:0.35; pointer-events:none; user-select:none; }
+    .lock-wrapper.is-unlocked .plock-content { filter:none !important; opacity:1 !important; pointer-events:all !important; }
+    .plock-overlay { position:absolute; inset:0; background:rgba(8,12,24,0.75); backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px); display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:var(--r); z-index:5; gap:6px; transition:background 0.2s,opacity 0.3s ease; cursor:pointer; }
+    .plock-overlay:hover { background:rgba(8,12,24,0.86); }
+    .lock-wrapper.is-unlocked .plock-overlay { opacity:0 !important; pointer-events:none !important; }
+    .plo-ico { font-size:20px; color:var(--txt-2); }
+    .plo-title { font-family:var(--font-head); font-weight:700; font-size:14px; }
+    .plo-sub { font-size:12px; color:var(--txt-2); text-align:center; max-width:190px; line-height:1.45; }
+    .plo-btn { margin-top:9px; background:linear-gradient(90deg,var(--green),#2bc484); border:none; border-radius:var(--r-sm); padding:7px 18px; color:#fff; font-weight:700; font-size:12px; cursor:pointer; font-family:var(--font-head); transition:all 0.2s; }
+    .plo-btn:hover { opacity:0.88; transform:translateY(-1px); }
+
+    /* ── AI CHAT ── */
+    .ai-msg { background:var(--bg-3); border:1px solid var(--border); border-radius:14px 14px 14px 4px; padding:13px 15px; font-size:13.5px; line-height:1.7; margin-bottom:12px; position:relative; }
+    .ai-avatar { position:absolute; top:-8px; left:-4px; width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg,var(--green),var(--blue)); display:flex; align-items:center; justify-content:center; font-size:10px; color:#fff; }
+    .user-msg { background:var(--green-2); border:1px solid var(--green-3); border-radius:14px 14px 4px 14px; padding:11px 15px; font-size:13.5px; text-align:right; margin-bottom:12px; margin-left:18%; }
+
+    /* ── GAMIFICATION ── */
+    .bgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+    .trophy { background:var(--bg-3); border:1px solid var(--border); border-radius:var(--r-sm); padding:14px 8px; text-align:center; cursor:pointer; transition:all 0.2s; }
+    .trophy:hover { border-color:var(--amber); transform:translateY(-2px); }
+    .trophy-ico { font-size:22px; margin-bottom:6px; color:var(--amber); }
+    .trophy-ico.off { color:var(--txt-3); }
+    .trophy-name { font-size:11px; font-weight:600; color:var(--txt-2); font-family:var(--font-head); }
+    .trophy-pts { font-size:10px; color:var(--amber); margin-top:3px; font-family:var(--font-mono); }
+
+    /* ── AUTH PAGE ── */
+    .auth-page { position:fixed; inset:0; z-index:100; background:var(--bg); display:flex; align-items:center; justify-content:center; padding:16px; }
+    .auth-page::before { content:''; position:absolute; top:35%; left:50%; transform:translate(-50%,-50%); width:480px; height:360px; background:radial-gradient(ellipse,rgba(34,216,122,0.06),transparent 65%); pointer-events:none; }
+    .auth-box { background:var(--bg-2); border:1px solid var(--border-2); border-radius:22px; padding:38px 32px; width:380px; max-width:100%; max-height:calc(100vh - 32px); overflow-y:auto; box-shadow:var(--shadow-lg); position:relative; z-index:1; animation:pageIn 0.4s cubic-bezier(0.22,1,0.36,1); }
+    .auth-logo { text-align:center; margin-bottom:28px; }
+    .auth-ico { width:52px; height:52px; background:linear-gradient(135deg,var(--green),#1ab870); border-radius:16px; display:inline-flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:12px; color:#fff; box-shadow:0 6px 24px rgba(34,216,122,0.3); }
+    .auth-title { font-family:var(--font-head); font-weight:800; font-size:24px; letter-spacing:-0.5px; }
+    .auth-sub { font-size:13px; color:var(--txt-2); margin-top:4px; }
+    .auth-tabs { display:flex; background:var(--bg-3); border-radius:var(--r-sm); padding:3px; margin-bottom:22px; border:1px solid var(--border); }
+    .atab { flex:1; text-align:center; padding:8px; border-radius:7px; font-size:13.5px; font-weight:700; color:var(--txt-3); cursor:pointer; transition:all 0.18s; font-family:var(--font-head); }
+    .atab.active { background:var(--bg-2); color:var(--txt); box-shadow:0 2px 10px rgba(0,0,0,0.4); }
+    .afsec { display:none; }
+    .afsec.active { display:block; }
+    .ainput { width:100%; background:var(--bg-input); border:1px solid var(--border-2); border-radius:var(--r-sm); padding:11px 14px; color:var(--txt); font-family:var(--font-ui); font-size:14px; outline:none; margin-bottom:11px; transition:border-color 0.18s,box-shadow 0.18s; }
+    .ainput:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(34,216,122,0.08); }
+    .ainput::placeholder { color:var(--txt-4); }
+    .btn-auth { width:100%; background:linear-gradient(90deg,var(--green),#2bc484); border:none; border-radius:var(--r-sm); padding:13px; color:#fff; font-family:var(--font-head); font-weight:700; font-size:15px; cursor:pointer; margin-top:4px; transition:all 0.2s; box-shadow:0 4px 16px rgba(34,216,122,0.25); }
+    .btn-auth:hover { opacity:0.88; transform:translateY(-1px); }
+    .social-row { display:flex; gap:8px; margin-top:14px; }
+    .sbtn { flex:1; display:flex; align-items:center; justify-content:center; gap:7px; padding:9px; border-radius:var(--r-sm); border:1px solid var(--border-2); background:var(--bg-input); cursor:pointer; font-size:12.5px; color:var(--txt-2); transition:all 0.18s; font-weight:600; font-family:var(--font-head); }
+    .sbtn:hover { background:var(--bg-hover); color:var(--txt); border-color:var(--border-3); }
+    .divider { display:flex; align-items:center; gap:10px; margin:14px 0; color:var(--txt-4); font-size:11.5px; font-family:var(--font-head); }
+    .divider::before,.divider::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    /* ── MODALS ── */
+    .modal-wrap { display:none; position:fixed; inset:0; z-index:200; background:rgba(5,8,20,0.85); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); align-items:center; justify-content:center; padding:16px; }
+    .modal-wrap.open { display:flex; }
+    .modal { background:var(--bg-2); border:1px solid var(--border-2); border-radius:20px; padding:26px; width:440px; max-width:100%; max-height:92vh; overflow-y:auto; animation:slideUp 0.26s cubic-bezier(0.22,1,0.36,1); box-shadow:var(--shadow-lg); }
+    @keyframes slideUp { from{transform:translateY(20px) scale(0.97);opacity:0} to{transform:translateY(0) scale(1);opacity:1} }
+    .modal-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+    .modal-title { font-family:var(--font-head); font-weight:700; font-size:17px; display:flex; align-items:center; gap:9px; letter-spacing:-0.2px; }
+    .modal-x { width:30px; height:30px; border-radius:8px; background:var(--bg-3); border:1px solid var(--border); cursor:pointer; font-size:12px; color:var(--txt-2); display:flex; align-items:center; justify-content:center; transition:all 0.18s; }
+    .modal-x:hover { background:var(--border-2); color:var(--txt); }
+    .fselect { width:100%; background:var(--bg-input); border:1px solid var(--border-2); border-radius:var(--r-sm); padding:10px 13px; color:var(--txt); font-family:var(--font-ui); font-size:13.5px; outline:none; margin-bottom:11px; appearance:none; cursor:pointer; transition:border-color 0.18s; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A5C80' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; background-size:14px; padding-right:32px; }
+    .fselect:focus { border-color:var(--green); }
+    .btn-primary { width:100%; background:linear-gradient(90deg,var(--green),#2bc484); border:none; border-radius:var(--r-sm); padding:12px; color:#fff; font-family:var(--font-head); font-weight:700; font-size:14px; cursor:pointer; transition:all 0.2s; box-shadow:0 3px 12px rgba(34,216,122,0.2); }
+    .btn-primary:hover { opacity:0.88; transform:translateY(-1px); }
+    .btn-primary:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+
+    /* ── AI RESPONSE BOX ── */
+    .aibox { background:var(--bg-3); border:1px solid var(--green-3); border-radius:var(--r-sm); padding:14px; margin:14px 0; font-size:13.5px; line-height:1.7; min-height:60px; position:relative; }
+    .aityping { display:flex; gap:5px; align-items:center; padding:4px 0; }
+    .aityping span { width:7px; height:7px; border-radius:50%; background:var(--green); animation:bounce 1.2s infinite; }
+    .aityping span:nth-child(2) { animation-delay:0.2s; }
+    .aityping span:nth-child(3) { animation-delay:0.4s; }
+    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-7px)} }
+
+    /* ── TOAST ── */
+    .toast { position:fixed; bottom:24px; right:24px; z-index:300; background:var(--bg-2); border:1px solid var(--border-2); border-radius:14px; padding:14px 17px; display:flex; align-items:center; gap:12px; box-shadow:var(--shadow-lg); font-size:13.5px; transform:translateX(130%); transition:transform 0.3s cubic-bezier(0.22,1,0.36,1); max-width:320px; font-weight:500; }
+    .toast.show { transform:translateX(0); }
+    .toast-ico { font-size:17px; flex-shrink:0; }
+
+    /* ── MOBILE NAV ── */
+    .mnav { display:none; position:fixed; bottom:0; left:0; right:0; z-index:50; background:var(--bg-2); border-top:1px solid var(--border); padding:6px 4px max(10px, env(safe-area-inset-bottom)); justify-content:space-around; }
+    .mni { display:flex; flex-direction:column; align-items:center; gap:3px; padding:6px 10px; cursor:pointer; font-size:9px; font-weight:700; color:var(--txt-3); text-transform:uppercase; letter-spacing:0.6px; font-family:var(--font-head); border-radius:var(--r-sm); min-width:52px; transition:color 0.18s; -webkit-tap-highlight-color:transparent; }
+    .mni i { font-size:19px; margin-bottom:1px; }
+    .mni.active { color:var(--green); }
+    .mni:active { background:var(--bg-3); }
+
+    /* ── WEEKLY TREND CHART ── */
+    .trend-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-bottom:12px; }
+    .trend-day { display:flex; flex-direction:column; align-items:center; gap:5px; }
+    .trend-bar-wrap { flex:1; display:flex; align-items:flex-end; height:80px; }
+    .trend-bar { width:100%; border-radius:6px 6px 0 0; transition:all 0.3s; cursor:pointer; }
+    .trend-bar:hover { filter:brightness(1.2); }
+    .trend-day-lbl { font-size:9px; color:var(--txt-3); font-family:var(--font-mono); }
+    .trend-val { font-size:9px; color:var(--txt-2); font-family:var(--font-mono); }
+
+    /* ── WORKOUT HISTORY ── */
+    .history-item { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+    .history-item:last-child { border-bottom:none; }
+    .history-ico { width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+    .history-info { flex:1; min-width:0; }
+    .history-name { font-size:13.5px; font-weight:600; }
+    .history-meta { font-size:11.5px; color:var(--txt-2); margin-top:3px; display:flex; gap:10px; flex-wrap:wrap; }
+    .history-meta span { display:flex; align-items:center; gap:4px; }
+    .history-stats { display:flex; flex-direction:column; align-items:flex-end; gap:4px; }
+    .history-cal { font-family:var(--font-mono); font-weight:700; font-size:13px; }
+    .history-dur { font-size:11px; color:var(--txt-3); }
+
+    /* ── WEEKLY TREND PAGE ── */
+    .wk-stat-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:14px; }
+    .wk-stat { background:var(--bg-3); border:1px solid var(--border); border-radius:var(--r-sm); padding:14px; text-align:center; }
+    .wk-stat-val { font-family:var(--font-mono); font-weight:700; font-size:22px; margin-bottom:4px; }
+    .wk-stat-lbl { font-size:11px; color:var(--txt-2); }
+
+    /* ==============================================
+       RESPONSIVE — TABLET (≤960px)
+    ============================================== */
+    @media (max-width: 960px) {
+
+      /* Sidebar: full-height fixed drawer sliding from left */
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: min(var(--sidebar-w), 80vw);
+        min-width: unset;
+        height: 100%;
+        height: 100dvh;
+        transform: translateX(-100%);
+        z-index: 20;
+        box-shadow: var(--shadow-lg);
+        overflow-y: auto;
+        overflow-x: hidden;
+        /* Extra bottom padding for mobile safe area */
+        padding-bottom: max(80px, env(safe-area-inset-bottom));
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      /* Show the X close button inside sidebar header */
+      .sidebar-close-btn {
+        display: flex;
+      }
+
+      .menu-btn { display: flex; }
+      .g4 { grid-template-columns: 1fr 1fr; }
+      .g3 { grid-template-columns: 1fr 1fr; }
+      .g-auto { grid-template-columns: 1fr; }
+      .bgrid { grid-template-columns: repeat(3,1fr); }
+      .mnav { display: flex; }
+      .content { padding-bottom: 86px; }
+      .topbar { padding: 12px 16px; }
+      .topbar-right .btn span { display: none; }
+      .topbar-right .btn { padding: 8px 11px; }
+
+      /* Notification dropdown */
+      .notif-dropdown {
+        position: fixed;
+        top: 62px;
+        left: 12px;
+        right: 12px;
+        width: auto;
+        max-width: 100%;
+        border-radius: var(--r);
+        max-height: calc(100vh - 80px);
+      }
+    }
+
+    /* ==============================================
+       RESPONSIVE — MOBILE (≤600px)
+    ============================================== */
+    @media (max-width: 600px) {
+      .content { padding: 14px; padding-bottom: 86px; }
+      .topbar { padding: 11px 14px; }
+      .g4, .g3, .g2 { grid-template-columns: 1fr; }
+      .fgrid { grid-template-columns: 1fr; }
+      .fgrid3 { grid-template-columns: 1fr; }
+      .bgrid { grid-template-columns: repeat(2,1fr); }
+      .social-row { flex-wrap: wrap; }
+      .modal { padding: 20px 16px; border-radius: 16px; }
+      .page-title { font-size: 16px; }
+      .tile-val { font-size: 22px; }
+      .auth-box { padding: 28px 18px; }
+      .xtable th:nth-child(1), .xtable td:nth-child(1) { display: none; }
+      .topbar-right .btn-green, .topbar-right .btn-blue { display: none; }
+      .g-auto { grid-template-columns: 1fr; }
+      .wk-stat-grid { grid-template-columns: 1fr 1fr; }
+      .trend-grid { gap: 4px; }
+      .page-sub { display: none; }
+
+      /* Sidebar: a bit wider on small phones */
+      .sidebar {
+        width: min(280px, 88vw);
+      }
+
+      /* Toast above mobile nav bar */
+      .toast {
+        bottom: max(86px, calc(70px + env(safe-area-inset-bottom)));
+        right: 12px;
+        left: 12px;
+        max-width: 100%;
+      }
+
+      /* Notification dropdown: edge-to-edge */
+      .notif-dropdown {
+        top: 58px;
+        left: 8px;
+        right: 8px;
+        width: auto;
+        border-radius: 14px;
+        max-height: calc(100vh - 76px);
+      }
+    }
+
+    .mono { font-family: var(--font-mono); }
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div class="auth-page" id="authPage">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="auth-ico"><i class="fa-solid fa-rocket"></i></div>
+      <div class="auth-title">Ascendify</div>
+      <div class="auth-sub">Health · Fitness · Finance — All in one</div>
+    </div>
+    <div class="auth-tabs">
+      <div class="atab active" onclick="switchAuthTab('login')">Sign In</div>
+      <div class="atab" onclick="switchAuthTab('signup')">Create Account</div>
+    </div>
+    <div class="afsec active" id="loginForm">
+      <input class="ainput" type="email" placeholder="Email address">
+      <input class="ainput" type="password" placeholder="Password">
+      <div style="text-align:right;margin-bottom:13px;"><span style="font-size:12px;color:var(--blue);cursor:pointer;font-weight:600;">Forgot password?</span></div>
+      <button class="btn-auth" onclick="enterApp()">Sign In →</button>
+      <div class="divider">or continue with</div>
+      <div class="social-row">
+        <div class="sbtn" onclick="enterApp()"><i class="fa-brands fa-google"></i> Google</div>
+        <div class="sbtn" onclick="enterApp()"><i class="fa-brands fa-apple"></i> Apple</div>
+        <div class="sbtn" onclick="enterApp()"><i class="fa-brands fa-facebook-f"></i> Facebook</div>
+      </div>
+    </div>
+    <div class="afsec" id="signupForm">
+      <div class="fgrid" style="margin-bottom:11px;">
+        <div><label class="flabel">First Name</label><input class="ainput" style="margin-bottom:0" type="text" placeholder="Alex"></div>
+        <div><label class="flabel">Last Name</label><input class="ainput" style="margin-bottom:0" type="text" placeholder="Reyes"></div>
+      </div>
+      <input class="ainput" type="email" placeholder="Email address">
+      <input class="ainput" type="password" placeholder="Create password">
+      <input class="ainput" type="number" placeholder="Age">
+      <button class="btn-auth" onclick="enterApp()">Create Account →</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appRoot" style="display:none;width:100%;height:100%;flex:1;overflow:hidden;flex-direction:row;">
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon"><i class="fa-solid fa-rocket"></i></div>
+    <div>
+      <div class="logo-name">Ascen<span>dify</span></div>
+      <div class="logo-sub">Health · Fitness · Finance</div>
+    </div>
+    <button class="sidebar-close-btn" onclick="closeSidebar()" aria-label="Close menu">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Overview</div>
+    <div class="nav-item active" id="nav-dashboard" onclick="navTo('dashboard',this)"><i class="fa-solid fa-table-cells-large nav-icon"></i>Dashboard</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Health & Fitness</div>
+    <div class="nav-item" id="nav-workout" onclick="navTo('workout',this)"><i class="fa-solid fa-dumbbell nav-icon"></i>Workouts</div>
+    <div class="nav-item" id="nav-nutrition" onclick="navTo('nutrition',this)"><i class="fa-solid fa-bowl-food nav-icon"></i>Nutrition</div>
+    <div class="nav-item" id="nav-sleep" onclick="navTo('sleep',this)"><i class="fa-solid fa-bed nav-icon"></i>Sleep & Wellness</div>
+    <div class="nav-item" id="nav-goals" onclick="navTo('goals',this)"><i class="fa-solid fa-bullseye nav-icon"></i>Goals</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Finance</div>
+    <div class="nav-item" id="nav-expenses" onclick="navTo('expenses',this)"><i class="fa-solid fa-credit-card nav-icon"></i>Expenses</div>
+    <div class="nav-item" id="nav-budget" onclick="navTo('budget',this)"><i class="fa-solid fa-chart-pie nav-icon"></i>Budget</div>
+    <div class="nav-item" id="nav-savings" onclick="navTo('savings',this)"><i class="fa-solid fa-piggy-bank nav-icon"></i>Savings</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Premium</div>
+    <div class="nav-item locked" id="nav-insights" onclick="handlePremiumNav('insights',this)"><i class="fa-solid fa-wand-magic-sparkles nav-icon"></i>Insights<span class="pro-badge">PRO</span></div>
+    <div class="nav-item locked" id="nav-aicoach" onclick="handlePremiumNav('aicoach',this)"><i class="fa-solid fa-robot nav-icon"></i>AI Coach<span class="pro-badge">PRO</span></div>
+    <div class="nav-item locked" id="nav-gamification" onclick="handlePremiumNav('gamification',this)"><i class="fa-solid fa-trophy nav-icon"></i>Rewards<span class="pro-badge">PRO</span></div>
+    <div class="nav-item locked" id="nav-reports" onclick="handlePremiumNav('reports',this)"><i class="fa-solid fa-file-lines nav-icon"></i>Reports<span class="pro-badge">PRO</span></div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Account</div>
+    <div class="nav-item" id="nav-profile" onclick="navTo('profile',this)"><i class="fa-solid fa-user nav-icon"></i>Profile & Settings</div>
+  </div>
+  <div class="sidebar-bottom">
+    <div class="user-pill">
+      <div class="avatar">AR</div>
+      <div>
+        <div class="u-name">Alex Reyes</div>
+        <div class="u-plan" id="userPlan">Free Plan</div>
+      </div>
+    </div>
+    <div class="upgrade-cta" id="upgradeCta">
+      <div class="uc-title"><i class="fa-solid fa-bolt" style="color:var(--amber)"></i> Go Premium</div>
+      <div class="uc-sub">AI Coaching, Insights & more</div>
+      <button class="btn-upgrade" onclick="showModal('upgradeModal')">Upgrade Now</button>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main" id="mainArea">
+  <div class="topbar" id="topbar">
+    <div class="topbar-left">
+      <div class="menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
+      <div>
+        <div class="page-title" id="pageTitle">Dashboard</div>
+        <div class="page-sub" id="pageSub">Friday, March 27 · Good morning, Alex 👋</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-green" onclick="showModal('workoutModal')"><i class="fa-solid fa-plus"></i><span>Log Workout</span></button>
+      <button class="btn btn-blue" onclick="showModal('expenseModal')"><i class="fa-solid fa-plus"></i><span>Add Expense</span></button>
+      <div class="notif-wrap" id="notifWrap">
+        <div class="notif-btn" id="notifBtn" onclick="toggleNotifDropdown()">
+          <i class="fa-solid fa-bell"></i>
+          <div class="notif-dot" id="notifDot"></div>
+        </div>
+        <div class="notif-dropdown" id="notifDropdown">
+          <div class="notif-dd-head">
+            <div class="notif-dd-title"><i class="fa-solid fa-bell" style="color:var(--green);font-size:13px"></i> Notifications</div>
+            <div class="notif-mark-all" onclick="markAllRead()">Mark all read</div>
+          </div>
+          <div class="notif-item unread" onclick="handleNotifClick(this)">
+            <div class="notif-ico" style="background:var(--red-2);color:var(--red)"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="notif-body">
+              <div class="notif-title">Budget Alert: Food</div>
+              <div class="notif-desc">Food category is at 87% of your ₱5,000 budget. Only ₱650 left!</div>
+              <div class="notif-time">5 min ago</div>
+            </div>
+          </div>
+          <div class="notif-item unread" onclick="handleNotifClick(this)">
+            <div class="notif-ico" style="background:var(--green-2);color:var(--green)"><i class="fa-solid fa-fire"></i></div>
+            <div class="notif-body">
+              <div class="notif-title">8-Day Streak! 🔥</div>
+              <div class="notif-desc">You're on an 8-day workout streak. Keep going to earn the 10-Day badge!</div>
+              <div class="notif-time">1 hr ago</div>
+            </div>
+          </div>
+          <div class="notif-footer" onclick="showToast('All notifications viewed!','var(--blue)','fa-bell')">View all notifications</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="g4 mb14">
+        <div class="tile t-green"><i class="fa-solid fa-fire tile-ico" style="color:var(--green)"></i><div class="tile-lbl">Calories Burned</div><div class="tile-val" style="color:var(--green)">487</div><div class="tile-sub">Goal: 600 kcal</div><div class="chip chip-up"><i class="fa-solid fa-arrow-up" style="font-size:8px"></i> +12%</div></div>
+        <div class="tile t-blue"><i class="fa-solid fa-shoe-prints tile-ico" style="color:var(--blue)"></i><div class="tile-lbl">Steps Today</div><div class="tile-val" style="color:var(--blue)">7,842</div><div class="tile-sub">Goal: 10,000</div><div class="chip chip-up"><i class="fa-solid fa-arrow-up" style="font-size:8px"></i> +8%</div></div>
+        <div class="tile t-amber"><i class="fa-solid fa-peso-sign tile-ico" style="color:var(--amber)"></i><div class="tile-lbl">Spent Today</div><div class="tile-val" style="color:var(--amber)">₱645</div><div class="tile-sub">Budget: ₱1,200/day</div><div class="chip chip-down">₱120 vs avg</div></div>
+        <div class="tile t-purple"><i class="fa-solid fa-bed tile-ico" style="color:var(--purple)"></i><div class="tile-lbl">Sleep Last Night</div><div class="tile-val" style="color:var(--purple)">7.2h</div><div class="tile-sub">Optimal: 7–9h</div><div class="chip chip-up"><i class="fa-solid fa-arrow-up" style="font-size:8px"></i> +0.5h</div></div>
+      </div>
+      <div class="g-auto mb14">
+        <div class="card">
+          <div class="card-hd"><div class="card-lbl">Weekly Activity</div><span class="card-link">View All</span></div>
+          <div class="barchart" id="activityBarChart"></div>
+          <div style="display:flex;gap:8px;margin-top:13px;flex-wrap:wrap;">
+            <span class="badge bdg-green"><i class="fa-solid fa-dumbbell"></i> Strength 3×</span>
+            <span class="badge bdg-blue"><i class="fa-solid fa-person-running"></i> Cardio 2×</span>
+            <span class="badge bdg-purple"><i class="fa-solid fa-spa"></i> Yoga 1×</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><div class="card-lbl">Today's Progress</div></div>
+          <div>
+            <div class="prow"><div class="plabels"><span class="pname"><i class="fa-solid fa-fire" style="color:var(--green);font-size:11px"></i> Move</span><span class="pval" style="color:var(--green)">487 / 600</span></div><div class="ptrack"><div class="pfill" style="width:81%;background:linear-gradient(90deg,var(--green),#1ab870);"></div></div></div>
+            <div class="prow"><div class="plabels"><span class="pname"><i class="fa-solid fa-bolt" style="color:var(--blue);font-size:11px"></i> Exercise</span><span class="pval" style="color:var(--blue)">42 / 60 min</span></div><div class="ptrack"><div class="pfill" style="width:70%;background:linear-gradient(90deg,var(--blue),#2a7de0);"></div></div></div>
+            <div class="prow"><div class="plabels"><span class="pname"><i class="fa-solid fa-shoe-prints" style="color:var(--amber);font-size:11px"></i> Steps</span><span class="pval" style="color:var(--amber)">7,842 / 10k</span></div><div class="ptrack"><div class="pfill" style="width:78%;background:linear-gradient(90deg,var(--amber),#d97706);"></div></div></div>
+            <div class="prow"><div class="plabels"><span class="pname"><i class="fa-solid fa-droplet" style="color:var(--purple);font-size:11px"></i> Water</span><span class="pval" style="color:var(--purple)">1.8 / 2.5 L</span></div><div class="ptrack"><div class="pfill" style="width:72%;background:linear-gradient(90deg,var(--purple),#8b5cf6);"></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="g-auto mb14">
+        <div class="card">
+          <div class="card-hd"><div class="card-lbl">Budget Overview — March</div><span class="card-link">Details</span></div>
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+            <div class="donut-wrap"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"/><circle cx="50" cy="50" r="38" fill="none" stroke="var(--blue)" stroke-width="10" stroke-dasharray="165 74" stroke-linecap="round"/></svg><div class="donut-ctr"><div class="donut-val" style="color:var(--blue)">69%</div><div class="donut-sub">Used</div></div></div>
+            <div style="flex:1;">
+              <div class="prow"><div class="plabels"><span class="pname"><i class="fa-solid fa-burger" style="color:var(--red);font-size:10px"></i> Food</span><span class="pval">₱4,350</span></div><div class="ptrack"><div class="pfill" style="width:87%;background:var(--red);"></div></div></div>
+              <div class="prow"><div class="plabels"><span class="pname"><i class="fa-solid fa-pills" style="color:var(--green);font-size:10px"></i> Health</span><span class="pval">₱1,200</span></div><div class="ptrack"><div class="pfill" style="width:40%;background:var(--green);"></div></div></div>
+              <div class="prow"><div class="plabels"><span class="pname"><i class="fa-solid fa-masks-theater" style="color:var(--purple);font-size:10px"></i> Leisure</span><span class="pval">₱2,100</span></div><div class="ptrack"><div class="pfill" style="width:52%;background:var(--purple);"></div></div></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="badge bdg-green"><i class="fa-solid fa-arrow-down"></i> Income ₱45,000</span>
+            <span class="badge bdg-red"><i class="fa-solid fa-arrow-up"></i> Spent ₱22,150</span>
+            <span class="badge bdg-blue"><i class="fa-solid fa-piggy-bank"></i> Saved ₱22,850</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><div class="card-lbl">Recent Activity</div></div>
+          <div class="litem"><div class="lico" style="background:var(--green-2);color:var(--green)"><i class="fa-solid fa-dumbbell"></i></div><div class="linfo"><div class="lname">Upper Body Strength</div><div class="lsub">Today · 45 min · 320 kcal</div></div><span class="badge bdg-green">Done</span></div>
+          <div class="litem"><div class="lico" style="background:var(--red-2);color:var(--red)"><i class="fa-solid fa-burger"></i></div><div class="linfo"><div class="lname">Lunch — Jollibee</div><div class="lsub">Today</div></div><span class="badge bdg-red mono">-₱245</span></div>
+          <div class="litem"><div class="lico" style="background:var(--blue-2);color:var(--blue)"><i class="fa-solid fa-person-running"></i></div><div class="linfo"><div class="lname">Morning Run 5K</div><div class="lsub">Yesterday · 28 min</div></div><span class="badge bdg-blue">5 km</span></div>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="lock-wrapper is-locked" data-lock-id="dash-analytics">
+          <div class="plock-content card">
+            <div class="card-hd"><div class="card-lbl">Predictive Analytics</div></div>
+            <div style="height:90px;display:flex;align-items:center;justify-content:center;color:var(--txt-3);font-size:13px;">Future trend charts here</div>
+          </div>
+          <div class="plock-overlay" onclick="showModal('upgradeModal')">
+            <i class="fa-solid fa-lock plo-ico"></i>
+            <div class="plo-title">Predictive Analytics</div>
+            <div class="plo-sub">See future trends for health & spending</div>
+            <button class="plo-btn">Upgrade to Pro</button>
+          </div>
+        </div>
+        <div class="lock-wrapper is-locked" data-lock-id="dash-insights">
+          <div class="plock-content card">
+            <div class="card-hd"><div class="card-lbl">AI Insights Summary</div></div>
+            <div style="height:90px;display:flex;align-items:center;justify-content:center;color:var(--txt-3);font-size:13px;">AI analysis here</div>
+          </div>
+          <div class="plock-overlay" onclick="showModal('upgradeModal')">
+            <i class="fa-solid fa-wand-magic-sparkles plo-ico"></i>
+            <div class="plo-title">AI-Generated Insights</div>
+            <div class="plo-sub">Personalized health & finance guidance</div>
+            <button class="plo-btn">Upgrade to Pro</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKOUTS -->
+    <div class="page" id="page-workout">
+      <div class="tabbar" id="workoutTabBar">
+        <div class="tabitem active" onclick="switchWorkoutTab('log',this)">Log Workout</div>
+        <div class="tabitem" onclick="switchWorkoutTab('history',this)">History</div>
+        <div class="tabitem" onclick="switchWorkoutTab('trends',this)">Weekly Trends</div>
+      </div>
+      <div class="tab-panel active" id="wt-log">
+        <div class="g4 mb14">
+          <div class="tile t-green"><i class="fa-solid fa-dumbbell tile-ico" style="color:var(--green)"></i><div class="tile-lbl">This Week</div><div class="tile-val" style="color:var(--green)">5</div><div class="tile-sub">Workouts logged</div></div>
+          <div class="tile t-blue"><i class="fa-solid fa-stopwatch tile-ico" style="color:var(--blue)"></i><div class="tile-lbl">Total Time</div><div class="tile-val" style="color:var(--blue)">3h 40m</div><div class="tile-sub">This week</div></div>
+          <div class="tile t-amber"><i class="fa-solid fa-fire tile-ico" style="color:var(--amber)"></i><div class="tile-lbl">Calories</div><div class="tile-val" style="color:var(--amber)">1,842</div><div class="tile-sub">Burned this week</div></div>
+          <div class="tile t-red"><i class="fa-solid fa-hand-fist tile-ico" style="color:var(--red)"></i><div class="tile-lbl">Streak</div><div class="tile-val" style="color:var(--red)">8 days</div><div class="tile-sub">Keep it up!</div></div>
+        </div>
+        <div class="g-auto">
+          <div class="card">
+            <div class="card-hd"><div class="card-lbl">Recent Workouts</div><span class="card-link" onclick="showModal('workoutModal')">+ Add New</span></div>
+            <div class="litem"><div class="lico" style="background:var(--green-2);color:var(--green)"><i class="fa-solid fa-dumbbell"></i></div><div class="linfo"><div class="lname">Upper Body Strength</div><div class="lsub">Today · 45 min · 320 kcal</div></div><span class="badge bdg-green">Done</span></div>
+            <div class="litem"><div class="lico" style="background:var(--blue-2);color:var(--blue)"><i class="fa-solid fa-person-running"></i></div><div class="linfo"><div class="lname">5K Morning Run</div><div class="lsub">Yesterday · 28 min · 310 kcal</div></div><span class="badge bdg-blue">Cardio</span></div>
+          </div>
+          <div>
+            <div class="card mb14">
+              <div class="card-hd"><div class="card-lbl">Streak Tracker</div></div>
+              <div class="streak-row"><div class="sday-dot done">M</div><div class="sday-dot done">T</div><div class="sday-dot done">W</div><div class="sday-dot done">T</div><div class="sday-dot today">F</div><div class="sday-dot">S</div><div class="sday-dot">S</div></div>
+              <div style="margin-top:11px;font-size:12px;color:var(--txt-2);"><i class="fa-solid fa-fire" style="color:var(--amber)"></i> 8-day streak · Best: 21 days</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" id="wt-history">
+        <div class="card mb14">
+          <div class="card-hd"><div class="card-lbl">Workout History — March 2026</div></div>
+          <div class="history-item"><div class="history-ico" style="background:var(--green-2);color:var(--green)"><i class="fa-solid fa-dumbbell"></i></div><div class="history-info"><div class="history-name">Upper Body Strength</div><div class="history-meta"><span><i class="fa-regular fa-calendar"></i> Mar 27</span><span><i class="fa-solid fa-clock"></i> 45 min</span></div></div><div class="history-stats"><div class="history-cal" style="color:var(--amber)">320 kcal</div><span class="badge bdg-green" style="font-size:10px;">Strength</span></div></div>
+        </div>
+      </div>
+      <div class="tab-panel" id="wt-trends">
+        <div class="card"><div class="card-hd"><div class="card-lbl">This Week by Day</div></div>
+          <div class="srow"><div class="sday">Mon</div><div class="strack"><div class="sfill" style="width:75%"></div></div><div class="shrs">320</div></div>
+          <div class="srow"><div class="sday">Tue</div><div class="strack"><div class="sfill" style="width:0%"></div></div><div class="shrs" style="color:var(--txt-3)">—</div></div>
+          <div class="srow"><div class="sday">Wed</div><div class="strack"><div class="sfill" style="width:100%"></div></div><div class="shrs">480</div></div>
+          <div class="srow"><div class="sday">Fri</div><div class="strack"><div class="sfill" style="width:66%;background:linear-gradient(90deg,var(--amber),var(--red))"></div></div><div class="shrs">320</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NUTRITION -->
+    <div class="page" id="page-nutrition">
+      <div class="g4 mb14">
+        <div class="tile t-green"><i class="fa-solid fa-fire tile-ico" style="color:var(--green)"></i><div class="tile-lbl">Calories Today</div><div class="tile-val" style="color:var(--green)">1,640</div><div class="tile-sub">Goal: 2,000 kcal</div></div>
+        <div class="tile t-blue"><i class="fa-solid fa-drumstick-bite tile-ico" style="color:var(--blue)"></i><div class="tile-lbl">Protein</div><div class="tile-val" style="color:var(--blue)">98g</div><div class="tile-sub">Goal: 150g</div></div>
+        <div class="tile t-amber"><i class="fa-solid fa-wheat-awn tile-ico" style="color:var(--amber)"></i><div class="tile-lbl">Carbs</div><div class="tile-val" style="color:var(--amber)">210g</div><div class="tile-sub">Goal: 250g</div></div>
+        <div class="tile t-red"><i class="fa-solid fa-droplet tile-ico" style="color:var(--red)"></i><div class="tile-lbl">Fats</div><div class="tile-val" style="color:var(--red)">55g</div><div class="tile-sub">Goal: 65g</div></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div class="card-lbl">Today's Meals</div><span class="card-link" onclick="showModal('mealModal')">+ Log Meal</span></div>
+        <div class="litem"><div class="lico" style="background:var(--amber-2);color:var(--amber)"><i class="fa-solid fa-sun"></i></div><div class="linfo"><div class="lname">Breakfast — Oatmeal & Eggs</div><div class="lsub">7:00 AM · 480 kcal</div></div></div>
+        <div class="litem"><div class="lico" style="background:var(--blue-2);color:var(--blue)"><i class="fa-solid fa-bowl-rice"></i></div><div class="linfo"><div class="lname">Lunch — Chicken Rice Bowl</div><div class="lsub">12:45 PM · 650 kcal</div></div></div>
+      </div>
+    </div>
+
+    <!-- SLEEP -->
+    <div class="page" id="page-sleep">
+      <div class="g4 mb14">
+        <div class="tile t-purple"><i class="fa-solid fa-bed tile-ico" style="color:var(--purple)"></i><div class="tile-lbl">Last Night</div><div class="tile-val" style="color:var(--purple)">7.2h</div><div class="tile-sub">11:30 PM – 6:42 AM</div></div>
+        <div class="tile t-blue"><i class="fa-solid fa-heart-pulse tile-ico" style="color:var(--blue)"></i><div class="tile-lbl">Resting HR</div><div class="tile-val" style="color:var(--blue)">62 bpm</div><div class="tile-sub">Normal range</div></div>
+        <div class="tile t-green"><i class="fa-solid fa-face-smile tile-ico" style="color:var(--green)"></i><div class="tile-lbl">Today's Mood</div><div class="tile-val" style="color:var(--green)">Good</div><div class="tile-sub">Feeling energetic</div></div>
+        <div class="tile t-amber"><i class="fa-solid fa-brain tile-ico" style="color:var(--amber)"></i><div class="tile-lbl">Stress Level</div><div class="tile-val" style="color:var(--amber)">3/10</div><div class="tile-sub">Low stress today</div></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div class="card-lbl">Weekly Sleep</div></div>
+        <div class="srow"><div class="sday">Mon</div><div class="strack"><div class="sfill" style="width:80%"></div></div><div class="shrs">7.2h</div></div>
+        <div class="srow"><div class="sday">Tue</div><div class="strack"><div class="sfill" style="width:70%"></div></div><div class="shrs">6.3h</div></div>
+        <div class="srow"><div class="sday">Wed</div><div class="strack"><div class="sfill" style="width:90%"></div></div><div class="shrs">8.1h</div></div>
+        <div class="srow"><div class="sday">Fri</div><div class="strack"><div class="sfill" style="width:80%"></div></div><div class="shrs">7.2h</div></div>
+      </div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="page" id="page-goals">
+      <div class="sh"><div><div class="sh-title">My Goals</div><div class="sh-sub">Track your health & financial targets</div></div><button class="btn btn-green" onclick="showModal('goalModal')"><i class="fa-solid fa-plus"></i> New Goal</button></div>
+      <div class="g2">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:11px;font-family:var(--font-head);"><i class="fa-solid fa-dumbbell"></i> Fitness Goals</div>
+          <div class="gcard"><div class="gcard-hd"><div class="gcard-name"><i class="fa-solid fa-shoe-prints" style="color:var(--green)"></i> 10,000 Steps Daily</div><span class="badge bdg-green">Active</span></div><div class="plabels"><span style="font-size:12px;color:var(--txt-2)">Today: 7,842</span><span class="pval" style="color:var(--green)">78%</span></div><div class="ptrack"><div class="pfill" style="width:78%;background:var(--green);"></div></div></div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:11px;font-family:var(--font-head);"><i class="fa-solid fa-coins"></i> Finance Goals</div>
+          <div class="gcard"><div class="gcard-hd"><div class="gcard-name"><i class="fa-solid fa-shield-halved" style="color:var(--amber)"></i> Emergency Fund ₱50k</div><span class="badge bdg-amber">In Progress</span></div><div class="plabels"><span style="font-size:12px;color:var(--txt-2)">Saved: ₱32,000</span><span class="pval" style="color:var(--amber)">64%</span></div><div class="ptrack"><div class="pfill" style="width:64%;background:var(--amber);"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPENSES -->
+    <div class="page" id="page-expenses">
+      <div class="sh"><div><div class="sh-title">Expense Tracker</div></div><button class="btn btn-blue" onclick="showModal('expenseModal')"><i class="fa-solid fa-plus"></i> Add Expense</button></div>
+      <div class="g4 mb14">
+        <div class="tile t-blue"><i class="fa-solid fa-calendar-days tile-ico" style="color:var(--blue)"></i><div class="tile-lbl">This Month</div><div class="tile-val" style="color:var(--blue)">₱22,150</div></div>
+        <div class="tile t-red"><i class="fa-solid fa-burger tile-ico" style="color:var(--red)"></i><div class="tile-lbl">Food & Dining</div><div class="tile-val" style="color:var(--red)">₱4,350</div><div class="chip chip-down">87% of budget</div></div>
+        <div class="tile t-green"><i class="fa-solid fa-pills tile-ico" style="color:var(--green)"></i><div class="tile-lbl">Health</div><div class="tile-val" style="color:var(--green)">₱1,200</div></div>
+        <div class="tile t-purple"><i class="fa-solid fa-masks-theater tile-ico" style="color:var(--purple)"></i><div class="tile-lbl">Leisure</div><div class="tile-val" style="color:var(--purple)">₱2,100</div></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div class="card-lbl">Transaction History</div></div>
+        <table class="xtable">
+          <thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--txt-3);font-family:var(--font-mono);font-size:12px;">Mar 26</td><td>Jollibee Lunch</td><td><span class="cpill" style="background:var(--red-2);color:var(--red);"><i class="fa-solid fa-burger"></i> Food</span></td><td class="num" style="color:var(--red)">−₱245</td></tr>
+            <tr><td style="color:var(--txt-3);font-family:var(--font-mono);font-size:12px;">Mar 23</td><td>Salary</td><td><span class="cpill" style="background:var(--green-2);color:var(--green);"><i class="fa-solid fa-peso-sign"></i> Income</span></td><td class="num" style="color:var(--green)">+₱45,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+<!-- BUDGET -->
+<div class="page" id="page-budget">
+  <div class="sh"><div><div class="sh-title">Budget Manager</div></div><button class="btn btn-blue" onclick="showModal('setBudgetModal')"><i class="fa-solid fa-sliders"></i> Set Budget</button></div>
+  
+  <div class="g3 mb14">
+    <div class="tile t-green"><i class="fa-solid fa-peso-sign tile-ico" style="color:var(--green)"></i><div class="tile-lbl">Monthly Income</div><div class="tile-val" style="color:var(--green)">₱45,000</div></div>
+    <div class="tile t-red"><i class="fa-solid fa-money-bill-wave tile-ico" style="color:var(--red)"></i><div class="tile-lbl">Total Spent</div><div class="tile-val" style="color:var(--red)">₱22,150</div></div>
+    <div class="tile t-blue"><i class="fa-solid fa-wallet tile-ico" style="color:var(--blue)"></i><div class="tile-lbl">Remaining</div><div class="tile-val" style="color:var(--blue)">₱22,850</div></div>
+  </div>
+  
+  <!-- TOTAL BUDGET TILE -->
+  <div class="card mb14" style="background:linear-gradient(135deg,var(--bg-3),var(--bg-4));border:1px solid var(--green-3);">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="width:48px;height:48px;border-radius:12px;background:var(--green-2);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--green);flex-shrink:0;">
+          <i class="fa-solid fa-chart-pie"></i>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--txt-3);font-weight:700;text-transform:uppercase;letter-spacing:1px;font-family:var(--font-head);margin-bottom:3px;">Total Monthly Budget</div>
+          <div style="font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--green);letter-spacing:-0.5px;" id="totalBudgetDisplay">₱20,000</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:18px;align-items:center;">
+        <div style="text-align:center;">
+          <div style="font-size:10px;color:var(--txt-3);margin-bottom:3px;">Allocated</div>
+          <div style="font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--blue);" id="allocatedBudget">₱20,000</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:10px;color:var(--txt-3);margin-bottom:3px;">From Income</div>
+          <div style="font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--txt);" id="incomePercent">44.4%</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:14px;height:6px;background:rgba(255,255,255,0.06);border-radius:10px;overflow:hidden;">
+      <div style="height:100%;width:44.4%;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:10px;transition:width 0.6s ease;" id="budgetAllocBar"></div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-hd"><div class="card-lbl">Category Budgets</div></div>
+    <div class="prow"><div class="plabels"><span class="pname"><i class="fa-solid fa-burger" style="color:var(--red);font-size:10px"></i> Food & Dining</span><span class="pval"><b style="color:var(--red)">₱4,350</b> / ₱5,000</span></div><div class="ptrack"><div class="pfill" style="width:87%;background:var(--red);"></div></div></div>
+    <div class="prow"><div class="plabels"><span class="pname"><i class="fa-solid fa-car" style="color:var(--amber);font-size:10px"></i> Transport</span><span class="pval"><b style="color:var(--amber)">₱3,200</b> / ₱4,000</span></div><div class="ptrack"><div class="pfill" style="width:80%;background:var(--amber);"></div></div></div>
+  </div>
+</div>
+
+    <!-- SAVINGS -->
+    <div class="page" id="page-savings">
+      <div class="sh"><div><div class="sh-title">Savings Goals</div></div><button class="btn btn-green" onclick="showModal('savingsModal')"><i class="fa-solid fa-plus"></i> New Goal</button></div>
+      <div class="g3 mb14">
+        <div class="tile t-green"><i class="fa-solid fa-coins tile-ico" style="color:var(--green)"></i><div class="tile-lbl">Total Saved</div><div class="tile-val" style="color:var(--green)">₱40,500</div></div>
+        <div class="tile t-blue"><i class="fa-solid fa-chart-line tile-ico" style="color:var(--blue)"></i><div class="tile-lbl">Monthly Savings</div><div class="tile-val" style="color:var(--blue)">₱5,000</div></div>
+        <div class="tile t-amber"><i class="fa-solid fa-bullseye tile-ico" style="color:var(--amber)"></i><div class="tile-lbl">Active Goals</div><div class="tile-val" style="color:var(--amber)">3</div></div>
+      </div>
+    </div>
+
+    <!-- INSIGHTS (PREMIUM) -->
+    <div class="page" id="page-insights">
+      <div class="insight"><div class="insight-lbl"><i class="fa-solid fa-link-simple"></i> Health × Finance Correlation</div><div class="insight-txt">Your fitness spending (₱2,300 this month) correlates with <b>23% fewer sick days</b> and <b>15% less medical spend</b>.</div></div>
+      <div class="g3 mb14">
+        <div class="tile t-green"><div class="tile-lbl">Fitness ROI</div><div class="tile-val" style="color:var(--green)">+₱1,800</div></div>
+        <div class="tile t-blue"><div class="tile-lbl">Next Month Forecast</div><div class="tile-val" style="color:var(--blue)">₱18k</div></div>
+        <div class="tile t-amber"><div class="tile-lbl">Savings Rate</div><div class="tile-val" style="color:var(--amber)">50.8%</div></div>
+      </div>
+    </div>
+
+    <!-- AI COACH (PREMIUM) -->
+    <div class="page" id="page-aicoach">
+      <div class="sh"><div><div class="sh-title">AI Coach</div></div><button class="btn btn-green" onclick="startNewChat()"><i class="fa-solid fa-comments"></i> New Chat</button></div>
+      <div class="card" style="height:calc(100vh - 220px);display:flex;flex-direction:column;">
+        <div style="flex:1;overflow-y:auto;padding-right:4px;">
+          <div class="ai-msg"><div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>Good morning Alex! Based on your data, today's a great day for a strength workout.</div>
+          <div class="user-msg">What should I prioritize this week?</div>
+          <div class="ai-msg"><div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>Top 3 priorities:<br><br><b>Fitness:</b> 2 more workouts<br><b>Finance:</b> Cap food at ₱300/day<br><b>Sleep:</b> Aim for 8h tonight</div>
+        </div>
+        <div style="padding-top:12px;border-top:1px solid var(--border);display:flex;gap:8px;">
+          <input type="text" class="finput" id="chatInput" placeholder="Ask your AI Coach anything..." style="flex:1;margin-bottom:0;" onkeydown="if(event.key==='Enter')sendChat()">
+          <button class="btn btn-green" onclick="sendChat()" style="padding:10px 16px;"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REWARDS (PREMIUM) -->
+    <div class="page" id="page-gamification">
+      <div class="sh"><div><div class="sh-title">Rewards & Gamification</div></div></div>
+      <div class="g4 mb18">
+        <div class="tile t-amber"><div class="tile-lbl">Total Points</div><div class="tile-val" style="color:var(--amber)">2,840</div></div>
+        <div class="tile t-green"><div class="tile-lbl">Badges Earned</div><div class="tile-val" style="color:var(--green)">9</div></div>
+        <div class="tile t-blue"><div class="tile-lbl">Best Streak</div><div class="tile-val" style="color:var(--blue)">21 days</div></div>
+        <div class="tile t-purple"><div class="tile-lbl">Leaderboard</div><div class="tile-val" style="color:var(--purple)">#12</div></div>
+      </div>
+    </div>
+
+    <!-- REPORTS (PREMIUM) -->
+    <div class="page" id="page-reports">
+      <div class="sh"><div><div class="sh-title">Export & Reports</div></div></div>
+      <div class="g3 mb14">
+        <div class="tile t-green" onclick="generateReport('weekly','pdf')" style="cursor:pointer;"><div class="tile-lbl">Weekly Report</div><div class="tile-val" style="color:var(--green)">PDF</div></div>
+        <div class="tile t-blue" onclick="generateReport('monthly','csv')" style="cursor:pointer;"><div class="tile-lbl">Monthly Report</div><div class="tile-val" style="color:var(--blue)">CSV</div></div>
+        <div class="tile t-amber" onclick="generateReport('shareable','link')" style="cursor:pointer;"><div class="tile-lbl">Shareable Link</div><div class="tile-val" style="color:var(--amber)">Link</div></div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="page" id="page-profile">
+      <div class="g-auto">
+        <div>
+          <div class="card mb14">
+            <div class="card-hd"><div class="card-lbl">Personal Info</div></div>
+            <div class="fgrid">
+              <div class="fgroup"><label class="flabel">First Name</label><input class="finput" value="Alex"></div>
+              <div class="fgroup"><label class="flabel">Last Name</label><input class="finput" value="Reyes"></div>
+              <div class="fgroup"><label class="flabel">Age</label><input class="finput" value="26"></div>
+              <div class="fgroup"><label class="flabel">Weight (kg)</label><input class="finput" value="76"></div>
+            </div>
+            <button class="btn-primary" style="margin-top:6px;" onclick="showToast('Profile updated!','var(--green)','fa-check')">Save Changes</button>
+          </div>
+        </div>
+        <div>
+          <div class="card mb14">
+            <div class="card-hd"><div class="card-lbl">Notifications</div></div>
+            <div class="litem"><div class="linfo"><div class="lname">Budget alerts</div></div><input type="checkbox" checked style="accent-color:var(--green);width:16px;height:16px;cursor:pointer;flex-shrink:0;"></div>
+            <div class="litem"><div class="linfo"><div class="lname">Workout reminders</div></div><input type="checkbox" checked style="accent-color:var(--green);width:16px;height:16px;cursor:pointer;flex-shrink:0;"></div>
+          </div>
+          <div class="upgrade-cta" id="profileUpgradeCta">
+            <div class="uc-title"><i class="fa-solid fa-bolt" style="color:var(--amber)"></i> Upgrade to Premium</div>
+            <div class="uc-sub">AI Coaching · Insights · Reports</div>
+            <button class="btn-upgrade" style="margin-top:8px;" onclick="showModal('upgradeModal')">Upgrade — ₱299/mo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="mnav" id="mobileNav">
+  <div class="mni active" id="mob-dashboard" onclick="mobileNav('dashboard',this)"><i class="fa-solid fa-table-cells-large"></i>Home</div>
+  <div class="mni" id="mob-workout" onclick="mobileNav('workout',this)"><i class="fa-solid fa-dumbbell"></i>Fitness</div>
+  <div class="mni" id="mob-expenses" onclick="mobileNav('expenses',this)"><i class="fa-solid fa-credit-card"></i>Finance</div>
+  <div class="mni" id="mob-goals" onclick="mobileNav('goals',this)"><i class="fa-solid fa-bullseye"></i>Goals</div>
+  <div class="mni" id="mob-profile" onclick="mobileNav('profile',this)"><i class="fa-solid fa-user"></i>Profile</div>
+</nav>
+
+<!-- MODALS -->
+<div class="modal-wrap" id="workoutModal">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title"><i class="fa-solid fa-dumbbell" style="color:var(--green)"></i>Log Workout</div><button class="modal-x" onclick="closeModal('workoutModal')"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fgrid">
+      <div class="fgroup"><label class="flabel">Workout Type</label><select class="fselect"><option>Strength Training</option><option>Cardio / Running</option><option>Yoga / Stretching</option></select></div>
+      <div class="fgroup"><label class="flabel">Duration (min)</label><input class="finput" type="number" placeholder="45"></div>
+      <div class="fgroup"><label class="flabel">Calories Burned</label><input class="finput" type="number" placeholder="320"></div>
+      <div class="fgroup"><label class="flabel">Intensity</label><select class="fselect"><option>Easy</option><option selected>Moderate</option><option>Intense</option></select></div>
+    </div>
+    <button class="btn-primary" onclick="closeModal('workoutModal');showToast('Workout logged! +50 pts 🔥','var(--green)','fa-check')">Save Workout</button>
+  </div>
+</div>
+
+<div class="modal-wrap" id="expenseModal">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title"><i class="fa-solid fa-credit-card" style="color:var(--blue)"></i>Add Expense</div><button class="modal-x" onclick="closeModal('expenseModal')"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fgrid">
+      <div class="fgroup"><label class="flabel">Amount (₱)</label><input class="finput" type="number" placeholder="245"></div>
+      <div class="fgroup"><label class="flabel">Category</label><select class="fselect"><option>Food & Dining</option><option>Health</option><option>Fitness</option><option>Leisure</option><option>Transport</option></select></div>
+    </div>
+    <div class="fgroup" style="margin-bottom:15px;"><label class="flabel">Description</label><input class="finput" placeholder="e.g. Jollibee lunch"></div>
+    <button class="btn-primary" onclick="closeModal('expenseModal');showToast('Expense added!','var(--blue)','fa-check')">Add Expense</button>
+  </div>
+</div>
+
+<div class="modal-wrap" id="mealModal">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title"><i class="fa-solid fa-bowl-food" style="color:var(--green)"></i>Log Meal</div><button class="modal-x" onclick="closeModal('mealModal')"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fgroup" style="margin-bottom:11px;"><label class="flabel">Meal / Food Item</label><input class="finput" placeholder="e.g. Chicken Rice Bowl"></div>
+    <button class="btn-primary" onclick="closeModal('mealModal');showToast('Meal logged!','var(--green)','fa-check')">Log Meal</button>
+  </div>
+</div>
+
+<div class="modal-wrap" id="goalModal">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title"><i class="fa-solid fa-bullseye" style="color:var(--amber)"></i>New Goal</div><button class="modal-x" onclick="closeModal('goalModal')"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fgroup" style="margin-bottom:11px;"><label class="flabel">Goal Name</label><input class="finput" placeholder="e.g. Run 5km every week"></div>
+    <button class="btn-primary" onclick="closeModal('goalModal');showToast('Goal created!','var(--amber)','fa-bullseye')">Create Goal</button>
+  </div>
+</div>
+
+<div class="modal-wrap" id="savingsModal">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title"><i class="fa-solid fa-piggy-bank" style="color:var(--green)"></i>New Savings Goal</div><button class="modal-x" onclick="closeModal('savingsModal')"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fgroup" style="margin-bottom:11px;"><label class="flabel">Goal Name</label><input class="finput" placeholder="e.g. New Laptop"></div>
+    <button class="btn-primary" onclick="closeModal('savingsModal');showToast('Savings goal created!','var(--green)','fa-piggy-bank')">Save Goal</button>
+  </div>
+</div>
+
+<!-- Set Monthly Budget Modal -->
+<div class="modal-wrap" id="setBudgetModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-title"><i class="fa-solid fa-sliders" style="color:var(--blue)"></i>Set Monthly Budget</div>
+      <button class="modal-x" onclick="closeModal('setBudgetModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    
+    <div class="budrow">
+      <div class="budico" style="background:var(--red-2);color:var(--red)"><i class="fa-solid fa-burger"></i></div>
+      <div class="budlbl">Food & Dining</div>
+      <div class="bud-wrap"><input type="number" class="budinput" id="bud-food" value="5000"></div>
+    </div>
+    
+    <div class="budrow">
+      <div class="budico" style="background:var(--green-2);color:var(--green)"><i class="fa-solid fa-pills"></i></div>
+      <div class="budlbl">Health & Medical</div>
+      <div class="bud-wrap"><input type="number" class="budinput" id="bud-health" value="3000"></div>
+    </div>
+    
+    <div class="budrow">
+      <div class="budico" style="background:var(--blue-2);color:var(--blue)"><i class="fa-solid fa-dumbbell"></i></div>
+      <div class="budlbl">Fitness</div>
+      <div class="bud-wrap"><input type="number" class="budinput" id="bud-fitness" value="2000"></div>
+    </div>
+    
+    <div class="budrow">
+      <div class="budico" style="background:var(--purple-2);color:var(--purple)"><i class="fa-solid fa-gamepad"></i></div>
+      <div class="budlbl">Leisure</div>
+      <div class="bud-wrap"><input type="number" class="budinput" id="bud-leisure" value="3500"></div>
+    </div>
+    
+    <div class="budrow">
+      <div class="budico" style="background:var(--amber-2);color:var(--amber)"><i class="fa-solid fa-car"></i></div>
+      <div class="budlbl">Transport</div>
+      <div class="bud-wrap"><input type="number" class="budinput" id="bud-transport" value="4000"></div>
+    </div>
+    
+    <div class="budrow">
+      <div class="budico" style="background:var(--txt-4);color:var(--txt-2)"><i class="fa-solid fa-bag-shopping"></i></div>
+      <div class="budlbl">Others</div>
+      <div class="bud-wrap"><input type="number" class="budinput" id="bud-others" value="2500"></div>
+    </div>
+    
+    <button class="btn-primary" onclick="saveBudget()"><i class="fa-solid fa-check"></i> Save Budget</button>
+  </div>
+</div>
+
+<!-- UPGRADE MODAL -->
+<div class="modal-wrap" id="upgradeModal">
+  <div class="modal" style="text-align:center;">
+    <div class="modal-hd">
+      <div class="modal-title"><i class="fa-solid fa-bolt" style="color:var(--amber)"></i>Ascendify Premium</div>
+      <button class="modal-x" onclick="closeModal('upgradeModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div style="font-size:34px;color:var(--amber);margin-bottom:10px;"><i class="fa-solid fa-star"></i></div>
+    <div style="font-family:var(--font-head);font-weight:800;font-size:21px;margin-bottom:7px;">Unlock Full Power</div>
+    <div style="font-size:13px;color:var(--txt-2);margin-bottom:18px;line-height:1.55;">Everything you need to achieve your goals</div>
+    <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;text-align:left;">
+      <div style="display:flex;gap:10px;align-items:center;font-size:13.5px;"><i class="fa-solid fa-check" style="color:var(--green);width:15px;flex-shrink:0"></i> AI Fitness & Finance Coaching</div>
+      <div style="display:flex;gap:10px;align-items:center;font-size:13.5px;"><i class="fa-solid fa-check" style="color:var(--green);width:15px;flex-shrink:0"></i> Predictive Analytics & Trend Forecasting</div>
+      <div style="display:flex;gap:10px;align-items:center;font-size:13.5px;"><i class="fa-solid fa-check" style="color:var(--green);width:15px;flex-shrink:0"></i> PDF / CSV Export & Reports</div>
+      <div style="display:flex;gap:10px;align-items:center;font-size:13.5px;"><i class="fa-solid fa-check" style="color:var(--green);width:15px;flex-shrink:0"></i> Leaderboards & Advanced Gamification</div>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(34,216,122,0.07),rgba(77,171,247,0.07));border:1px solid var(--green-3);border-radius:14px;padding:16px;margin-bottom:16px;">
+      <div style="font-family:var(--font-mono);font-weight:700;font-size:28px;letter-spacing:-1px;">₱299<span style="font-size:15px;font-weight:400;font-family:var(--font-ui);color:var(--txt-2)">/month</span></div>
+      <div style="font-size:12px;color:var(--txt-2);margin-top:3px;">or ₱2,499/year — save 30%</div>
+    </div>
+    <button class="btn-primary" id="startPremiumBtn" onclick="startPremium()">Start Premium — 7-day free trial</button>
+    <div style="font-size:11.5px;color:var(--txt-4);margin-top:10px;">Cancel anytime · No hidden fees</div>
+    <div class="aibox" id="aiResponseBox" style="display:none;text-align:left;margin-top:12px;"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <i class="toast-ico fa-solid fa-check" id="toastIcon"></i>
+  <span id="toastMsg">Action completed!</span>
+</div>
+
+<script>
+let isPremium = false;
+const PREMIUM_PAGES = ['insights','aicoach','gamification','reports'];
+
+// ══ AUTH ══
+function switchAuthTab(tab) {
+  document.querySelectorAll('.atab').forEach((t,i) =>
+    t.classList.toggle('active',(tab==='login'&&i===0)||(tab==='signup'&&i===1)));
+  document.getElementById('loginForm').classList.toggle('active',tab==='login');
+  document.getElementById('signupForm').classList.toggle('active',tab==='signup');
+}
+function enterApp() {
+  document.getElementById('authPage').style.display = 'none';
+  const app = document.getElementById('appRoot');
+  app.style.display = 'flex';
+  initPremiumLocks();
+}
+function initPremiumLocks() {
+  if (!isPremium) {
+    document.querySelectorAll('.lock-wrapper').forEach(w => {
+      w.classList.remove('is-unlocked');
+      w.classList.add('is-locked');
+    });
+    PREMIUM_PAGES.forEach(page => {
+      const navItem = document.getElementById('nav-' + page);
+      if (navItem) { navItem.classList.add('locked'); navItem.classList.remove('unlocked'); }
+    });
+  }
+}
+
+// ══ SIDEBAR ══
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+// ══ NAV ══
+const META = {
+  dashboard:    {title:'Dashboard',sub:'Friday, March 27 · Good morning, Alex 👋'},
+  workout:      {title:'Workouts',sub:'Track your activity & fitness progress'},
+  nutrition:    {title:'Nutrition',sub:'Log meals & track macros'},
+  sleep:        {title:'Sleep & Wellness',sub:'Rest, recovery & mood tracking'},
+  goals:        {title:'Goals',sub:'Your health & financial targets'},
+  expenses:     {title:'Expense Tracker',sub:'All your transactions in one place'},
+  budget:       {title:'Budget Manager',sub:'Plan & track your monthly spending'},
+  savings:      {title:'Savings Goals',sub:'Build your financial future'},
+  insights:     {title:'Insights & Analytics',sub:'AI-powered correlations & predictive trends'},
+  aicoach:      {title:'AI Coach',sub:'Your personalized fitness & finance assistant'},
+  gamification: {title:'Rewards & Gamification',sub:'Badges, streaks & leaderboards'},
+  reports:      {title:'Export & Reports',sub:'Download, share, or schedule reports'},
+  profile:      {title:'Profile & Settings',sub:'Manage your account & preferences'},
+};
+function navTo(page, el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const pg = document.getElementById('page-' + page);
+  if (pg) pg.classList.add('active');
+  const m = META[page] || {};
+  document.getElementById('pageTitle').textContent = m.title || page;
+  document.getElementById('pageSub').textContent = m.sub || '';
+  closeSidebar();
+}
+function handlePremiumNav(page, el) {
+  if (!isPremium) { showModal('upgradeModal'); return; }
+  navTo(page, el);
+}
+function mobileNav(page, el) {
+  document.querySelectorAll('.mni').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+  if (PREMIUM_PAGES.includes(page) && !isPremium) { showModal('upgradeModal'); return; }
+  navTo(page, null);
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('id') === 'nav-' + page) n.classList.add('active');
+  });
+}
+function switchWorkoutTab(tab, el) {
+  const bar = document.getElementById('workoutTabBar');
+  bar.querySelectorAll('.tabitem').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('wt-' + tab).classList.add('active');
+}
+
+// ══ MODAL ══
+function showModal(id) {
+  document.getElementById(id).classList.add('open');
+  if(id === 'setBudgetModal') {
+    setTimeout(updateModalTotal, 100);
+    const cats = ['food','health','fitness','leisure','transport','others'];
+    cats.forEach(c => {
+      const inp = document.getElementById('bud-'+c);
+      if(inp) {
+        inp.removeEventListener('input', updateModalTotal);
+        inp.addEventListener('input', updateModalTotal);
+      }
+    });
+  }
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.modal-wrap').forEach(m =>
+    m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
+});
+
+// ══ TOAST ══
+let tTimer;
+function showToast(msg, color, ico) {
+  const t = document.getElementById('toast');
+  const ic = document.getElementById('toastIcon');
+  document.getElementById('toastMsg').textContent = msg;
+  t.style.borderColor = color || 'var(--border-2)';
+  ic.style.color = color || 'var(--green)';
+  ic.className = 'toast-ico fa-solid ' + (ico || 'fa-check');
+  t.classList.add('show');
+  clearTimeout(tTimer);
+  tTimer = setTimeout(() => t.classList.remove('show'), 3400);
+}
+
+// ══ CHARTS ══
+function renderChart(id, data, colors) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const max = Math.max(...data.map(d => d.v));
+  el.innerHTML = data.map((d, i) => `
+    <div class="bcol" style="animation:pageIn 0.4s ease ${i * 0.07}s both;">
+      <div class="bar" style="height:${Math.round((d.v/max)*66)+10}px;background:${colors[d.c]||'var(--green)'};opacity:0.85;" title="${d.label}: ${d.v}"></div>
+      <div class="blbl">${d.label}</div>
+    </div>`).join('');
+}
+const C = {g:'var(--green)',b:'var(--blue)',p:'var(--purple)',a:'var(--amber)',r:'var(--red)'};
+renderChart('activityBarChart',[
+  {label:'Mon',v:45,c:'g'},{label:'Tue',v:30,c:'b'},{label:'Wed',v:60,c:'g'},
+  {label:'Thu',v:0,c:'p'},{label:'Fri',v:45,c:'g'},{label:'Sat',v:50,c:'b'},{label:'Sun',v:20,c:'p'}
+], C);
+
+// ══ NOTIFICATIONS ══
+function toggleNotifDropdown() {
+  const btn = document.getElementById('notifBtn');
+  const dd = document.getElementById('notifDropdown');
+  const isOpen = dd.classList.contains('open');
+  if (isOpen) { dd.classList.remove('open'); btn.classList.remove('open'); }
+  else { dd.classList.add('open'); btn.classList.add('open'); }
+}
+function handleNotifClick(item) {
+  item.classList.remove('unread');
+  updateNotifDot();
+  showToast('Notification marked as read','var(--blue)','fa-check');
+}
+function markAllRead() {
+  document.querySelectorAll('.notif-item.unread').forEach(i => i.classList.remove('unread'));
+  updateNotifDot();
+  showToast('All notifications cleared!','var(--green)','fa-check');
+}
+function updateNotifDot() {
+  const hasUnread = document.querySelectorAll('.notif-item.unread').length > 0;
+  document.getElementById('notifDot').classList.toggle('hidden', !hasUnread);
+}
+document.addEventListener('click', e => {
+  const wrap = document.getElementById('notifWrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('notifDropdown').classList.remove('open');
+    document.getElementById('notifBtn').classList.remove('open');
+  }
+});
+
+// ══ PREMIUM ══
+function unlockPremiumFeatures() {
+  isPremium = true;
+  document.querySelectorAll('.lock-wrapper').forEach(wrapper => {
+    wrapper.classList.remove('is-locked');
+    wrapper.classList.add('is-unlocked');
+  });
+  PREMIUM_PAGES.forEach(page => {
+    const navItem = document.getElementById('nav-' + page);
+    if (navItem) {
+      navItem.classList.remove('locked');
+      navItem.classList.add('unlocked');
+      const badge = navItem.querySelector('.pro-badge');
+      if (badge) { badge.textContent = '✓ ACTIVE'; badge.classList.add('active'); }
+    }
+  });
+  const planEl = document.getElementById('userPlan');
+  planEl.textContent = '⭐ Premium Plan';
+  planEl.style.color = 'var(--green)';
+  document.querySelectorAll('.upgrade-cta').forEach(el => el.style.display = 'none');
+  showToast('🎉 Premium unlocked! All features active ⭐','var(--amber)','fa-star');
+}
+function startPremium() {
+  const btn = document.getElementById('startPremiumBtn');
+  const box = document.getElementById('aiResponseBox');
+  btn.disabled = true;
+  btn.textContent = 'Activating...';
+  box.style.display = 'block';
+  box.innerHTML = '<div class="aityping"><span></span><span></span><span></span></div>';
+  setTimeout(() => {
+    box.innerHTML = `<div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;color:#fff;"><i class="fa-solid fa-robot"></i></div><div style="line-height:1.65;">🎉 Welcome to Ascendify Premium, Alex! Your 7-day free trial is now active. Let's crush your goals together! 💪</div></div>`;
+    unlockPremiumFeatures();
+    setTimeout(() => {
+      closeModal('upgradeModal');
+      btn.disabled = false;
+      btn.textContent = 'Start Premium — 7-day free trial';
+    }, 2200);
+  }, 1400);
+}
+
+// ══ AI CHAT ══
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  const container = document.querySelector('#page-aicoach .card > div:first-child');
+  const userMsg = document.createElement('div');
+  userMsg.className = 'user-msg';
+  userMsg.textContent = msg;
+  container.appendChild(userMsg);
+  input.value = '';
+  container.scrollTop = container.scrollHeight;
+  setTimeout(() => {
+    const aiMsg = document.createElement('div');
+    aiMsg.className = 'ai-msg';
+    aiMsg.innerHTML = `<div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>Got it! I'll help you with that.`;
+    container.appendChild(aiMsg);
+    container.scrollTop = container.scrollHeight;
+  }, 1000);
+}
+function startNewChat() {
+  const container = document.querySelector('#page-aicoach .card > div:first-child');
+  if (container) container.innerHTML = `<div class="ai-msg"><div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>Hi Alex! 👋 What would you like to focus on today?</div>`;
+}
+
+// ══ REPORTS ══
+function generateReport(type, format) {
+  showToast(`Generating ${type} report...`,'var(--blue)','fa-file');
+  setTimeout(() => showToast(`${format.toUpperCase()} ready! 📥`,'var(--green)','fa-download'), 1500);
+}
+
+// ══ BUDGET MODAL TOTAL (FIXED) ══
+function updateModalTotal() {
+  const cats = ['food','health','fitness','leisure','transport','others'];
+  let total = 0;
+  const income = 45000;
+  
+  cats.forEach(c => {
+    const inp = document.getElementById('bud-'+c);
+    if(inp) total += parseFloat(inp.value) || 0;
+  });
+  
+  const totalEl = document.getElementById('modalTotalBudget');
+  const pctEl = document.getElementById('modalBudgetPercent');
+  const barEl = document.getElementById('modalBudgetBar');
+  
+  if(totalEl) totalEl.textContent = '₱' + total.toLocaleString();
+  
+  if(pctEl && barEl) {
+    const pct = income > 0 ? ((total / income) * 100).toFixed(1) : 0;
+    pctEl.textContent = pct + '%';
+    barEl.style.width = pct + '%';
+    if(pct > 100) {
+      pctEl.style.color = 'var(--red)';
+      barEl.style.background = 'var(--red)';
+    } else {
+      pctEl.style.color = 'var(--blue)';
+      barEl.style.background = 'linear-gradient(90deg,var(--green),var(--blue))';
+    }
+  }
+}
+
+// ✅ SAVE BUDGET FUNCTION (was missing - now defined!)
+function saveBudget() {
+  const cats = ['food','health','fitness','leisure','transport','others'];
+  cats.forEach(c => {
+    const nv = parseFloat(document.getElementById('bud-'+c)?.value) || 0;
+    const d = document.getElementById('disp-'+c);
+    const b = document.getElementById('bar-'+c);
+    if(d) d.textContent = '₱' + nv.toLocaleString();
+    if(b) {
+      const spentVal = {food:4350,health:1200,fitness:800,leisure:2100,transport:3200,others:1500}[c] || 0;
+      b.style.width = nv > 0 ? Math.min((spentVal / nv) * 100, 100) + '%' : '0%';
+    }
+  });
+  closeModal('setBudgetModal');
+  showToast('Budget updated successfully!','var(--green)','fa-check');
+  updateModalTotal();
+}
+
+
+// ══ INIT ══
+document.addEventListener('DOMContentLoaded', () => {
+  // Add input listeners for budget modal (real-time total update)
+  const cats = ['food','health','fitness','leisure','transport','others'];
+  cats.forEach(c => {
+    const inp = document.getElementById('bud-'+c);
+    if(inp) inp.addEventListener('input', updateModalTotal);
+  });
+  // Initial modal total calc
+  updateModalTotal();
+});
+</script>
+</body>
+</html>
